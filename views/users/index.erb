@@ -1,0 +1,9 @@
+<h1> This is the User Index Page </h1>
+<br>
+<%= @users.count %> Users
+<% @users.each do |user| %>
+  <%= user.name %>
+  <br>
+<% end %>
+<br>
+<a href='/users/new'>New User</a>

@@ -1,0 +1,32 @@
+<div class="grid-container">
+  <div class="medium-6 cell">
+    <% if @location.errors.any? %>
+      <br>
+      <div class="callout alert">
+        <h5>Update Location Errors</h5>
+        <ul>
+          <%@location.errors.full_messages.each do |error|%>
+            <li><%=error.upcase%></li>
+          <%end%>
+        </ul>
+      </div>
+    <% end %>
+    <fieldset class="fieldset">
+      <legend>Update Location</legend>
+      <form action="/locations/<%= @location.id %>" method="post">
+        <input type="hidden" name="_method" value="PUT">
+        <label>Address 1: </label>
+        <input type="text" required="true" name="address_1" value="<%=@location.address_1%>">
+        <label>Address 2: </label>
+        <input type="text" required="true" name="address_2" value="<%=@location.address_2%>">
+        <label>City:</label>
+        <input type="text" required="true" name="city" value="<%=@location.city%>">
+        <label>State:</label>
+        <input type="text" required="true" name="state" value="<%=@location.state%>">
+        <label>Postal Code:</label>
+        <input type="number" required="true" name="postal_code" value="<%=@location.postal_code%>">
+        <input type="submit" value="submit">
+      </form>
+    </fieldset>
+  </div>
+</div>

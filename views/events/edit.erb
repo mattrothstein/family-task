@@ -1,0 +1,39 @@
+<div class="grid-container">
+  <div class="medium-6 cell">
+    <% if @task.errors.any? %>
+      <br>
+      <div class="callout alert">
+        <h5>Edit Task Errors</h5>
+        <ul>
+          <%@task.errors.full_messages.each do |error|%>
+            <li><%=error.upcase%></li>
+          <%end%>
+        </ul>
+      </div>
+    <% end %>
+    <fieldset class="fieldset">
+      <legend>Edit Task</legend>
+      <form action="/tasks/<%=@task.id%>" method="post">
+        <input type="hidden" name="_method" value="PUT">
+        <label>User:</label>
+        <select name="user_id">
+          <% User.all.each do |user| %>
+            <option selected="<%= user.id == @task.user_id ? 'selected' : 'false'%>" value="<%=user.id%>"><%= user.first_name %></option>
+          <% end %>
+        </select>
+        <label>Description: </label>
+        <textarea required="true" name="description" value="<%=@task.description%>"><%= @task.description %> </textarea>
+        <label>Event:</label>
+        <select name="event_id">
+          <%# <% Event.all.each do |event| %1> %>
+          <%# <% end %1> %>
+        </select>
+        <input type="hidden" name="status" value="false">
+        <input type="checkbox" id="status" name="status" <%= @task.status ? 'checked' : '' %>>
+        <label for="status">Completed?</label>
+        <br>
+        <input type="submit" value="submit">
+      </form>
+    </fieldset>
+  </div>
+</div>

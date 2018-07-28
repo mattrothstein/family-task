@@ -1,0 +1,37 @@
+<div class="grid-container">
+  <div class="medium-6 cell">
+    <h2><%= @tasks.count %> Tasks</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>User</th>
+          <th>Status</th>
+          <th>Description</th>
+          <th>Event</th>
+          <th colspan='2'>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @tasks.each do |record| %>
+          <tr>
+            <td><%= record.id %></td>
+            <td><%= record.user.first_name %></td>
+            <td><%= record.status %></td>
+            <td><%= record.description %></td>
+            <td><%= record.event_id %></td>
+            <td><a href=<%="tasks/#{record.id}/edit"%>>Edit</a></td>
+            <td>
+              <form action="/tasks/<%=record.id%>" method="post">
+                <input type="hidden" name="_method" value="DELETE">
+                <input type="submit" value="Delete">
+              </form>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <br>
+    <a href='/tasks/new'>New Task</a>
+  </div>
+</div>

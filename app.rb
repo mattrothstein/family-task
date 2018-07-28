@@ -2,6 +2,7 @@ require 'sinatra'
 require 'sinatra/reloader'
 require 'sinatra/activerecord'
 require 'tilt/erubis'
+require 'pry'
 
 configure :development do
   set :database, {adapter: 'postgresql', database: 'familytask'}

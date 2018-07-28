@@ -24,8 +24,10 @@
         <textarea required="true" name="description" value="<%=@task.description%>">Enter description here...</textarea>
         <label>Event:</label>
         <select name="event_id">
-          <%# <% Event.all.each do |event| %1> %>
-          <%# <% end %1> %>
+          <option></option>
+          <% Event.all.each do |event| %>
+            <option <%= 'selected' if event.id == @task.event_id %> value="<%=event.id%>"><%=event.title%></option>
+          <% end %>
         </select>
         <input type="submit" value="submit">
       </form>

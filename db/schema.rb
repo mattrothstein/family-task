@@ -15,7 +15,7 @@ ActiveRecord::Schema.define(version: 0) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "attendee", primary_key: ["user_id", "event_id"], force: :cascade do |t|
+  create_table "attendees", primary_key: ["user_id", "event_id"], force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "event_id", null: false
   end
@@ -27,7 +27,7 @@ ActiveRecord::Schema.define(version: 0) do
     t.text "description"
   end
 
-  create_table "host", primary_key: ["user_id", "event_id"], force: :cascade do |t|
+  create_table "hosts", primary_key: ["user_id", "event_id"], force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "event_id", null: false
   end
@@ -54,11 +54,11 @@ ActiveRecord::Schema.define(version: 0) do
     t.text "password", null: false
   end
 
-  add_foreign_key "attendee", "events", name: "attendee_event_id_fkey"
-  add_foreign_key "attendee", "users", name: "attendee_user_id_fkey"
+  add_foreign_key "attendees", "events", name: "attendees_event_id_fkey"
+  add_foreign_key "attendees", "users", name: "attendees_user_id_fkey"
   add_foreign_key "events", "locations", name: "events_location_id_fkey"
-  add_foreign_key "host", "events", name: "host_event_id_fkey"
-  add_foreign_key "host", "users", name: "host_user_id_fkey"
+  add_foreign_key "hosts", "events", name: "hosts_event_id_fkey"
+  add_foreign_key "hosts", "users", name: "hosts_user_id_fkey"
   add_foreign_key "tasks", "events", name: "tasks_event_id_fkey"
   add_foreign_key "tasks", "users", name: "tasks_user_id_fkey"
 end

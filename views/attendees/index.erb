@@ -1,0 +1,29 @@
+<div class="grid-container">
+  <div class="medium-6 cell">
+    <h2><%= @event.title %> - <%= @attendees.count%> Attendees</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @attendees.each do |record| %>
+          <tr>
+            <td><%= record.user.first_name %></td>
+            <td>
+              <form action="/event/<%=@event.id%>/attendees/<%=record.user_id%>" method="post">
+                <input type="hidden" name="_method" value="DELETE">
+                <input type="submit" value="Remove">
+              </form>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <br>
+    <a href='/events'>Back to Events</a> |
+    <a href='/event/<%=@event.id%>/attendees/new'>Invite People</a>
+  </div>
+</div>

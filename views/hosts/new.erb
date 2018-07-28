@@ -1,0 +1,29 @@
+<div class="grid-container">
+  <div class="medium-6 cell">
+    <h3>Add Event Host</h3>
+    <% if @host.errors.any? %>
+      <br>
+      <div class="callout alert">
+        <h5>Event Host Errors</h5>
+        <ul>
+          <%@host.errors.full_messages.each do |error|%>
+            <li><%=error.upcase%></li>
+          <%end%>
+        </ul>
+      </div>
+    <% end %>
+    <fieldset class="fieldset">
+      <legend><%= @event.title%></legend>
+      <form action="/event/<%=@event.id%>/hosts" method="post">
+        <label>Hosts:</label>
+        <select name="user_id">
+          <% User.all.each do |user| %>
+            <option value="<%=user.id%>"><%= user.first_name %></option>
+          <% end %>
+        </select>
+        <input type="submit" value="Add">
+      </form>
+    </fieldset>
+    <a href='/event/<%=@event.id%>/hosts'>See Hosts</a>
+  </div>
+</div>

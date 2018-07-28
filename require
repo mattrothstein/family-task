@@ -1,0 +1,254 @@
+2.5.1 :001 > require 'sinatra'
+ => true 
+2.5.1 :002 > require 'sinatra/reloader'
+ => true 
+2.5.1 :003 > require 'sinatra/activerecord'
+ => true 
+2.5.1 :004 > require 'tilt/erubis'
+ => true 
+2.5.1 :005 > require 'pry'
+ => true 
+2.5.1 :006 > 
+2.5.1 :007 > configure :development do
+2.5.1 :008 >       set :database, {adapter: 'postgresql', database: 'familytask'}
+2.5.1 :009?>   end
+ => #<ActiveRecord::ConnectionAdapters::ConnectionPool:0x00007fa45a0eab18 @mon_owner=nil, @mon_count=0, @mon_mutex=#<Thread::Mutex:0x00007fa45a0ea898>, @query_cache_enabled=#<Concurrent::Map:0x007fa45a0ea848 entries=0 default_proc=#<Proc:0x00007fa45a0ea4d8@/Users/matt/.rvm/gems/ruby-2.5.1/gems/activerecord-5.2.0/lib/active_record/connection_adapters/abstract/query_cache.rb:31>>, @spec=#<ActiveRecord::ConnectionAdapters::ConnectionSpecification:0x00007fa45a10d618 @name="primary", @config={:adapter=>"postgresql", :database=>"familytask"}, @adapter_method="postgresql_connection">, @checkout_timeout=5, @idle_timeout=300.0, @size=5, @thread_cached_conns=#<Concurrent::Map:0x007fa45a0ea410 entries=0 default_proc=nil>, @connections=[], @automatic_reconnect=true, @now_connecting=0, @threads_blocking_new_connections=0, @available=#<ActiveRecord::ConnectionAdapters::ConnectionPool::ConnectionLeasingQueue:0x00007fa45a0ea0f0 @lock=#<ActiveRecord::ConnectionAdapters::ConnectionPool:0x00007fa45a0eab18 ...>, @cond=#<MonitorMixin::ConditionVariable:0x00007fa45a0ea000 @monitor=#<ActiveRecord::ConnectionAdapters::ConnectionPool:0x00007fa45a0eab18 ...>, @cond=#<Thread::ConditionVariable:0x00007fa45a0e9e48>>, @num_waiting=0, @queue=[]>, @lock_thread=false, @reaper=#<ActiveRecord::ConnectionAdapters::ConnectionPool::Reaper:0x00007fa45a0e9d80 @pool=#<ActiveRecord::ConnectionAdapters::ConnectionPool:0x00007fa45a0eab18 ...>, @frequency=60.0>> 
+2.5.1 :010 > 
+2.5.1 :011 > current_dir = Dir.pwd
+ => "/Users/matt/Projects/family-task" 
+2.5.1 :012 > Dir["#{current_dir}/models/*.rb"].each { |file| require file }
+ => ["/Users/matt/Projects/family-task/models/attendee.rb", "/Users/matt/Projects/family-task/models/location.rb", "/Users/matt/Projects/family-task/models/host.rb", "/Users/matt/Projects/family-task/models/event.rb", "/Users/matt/Projects/family-task/models/event_user_manager.rb", "/Users/matt/Projects/family-task/models/user.rb", "/Users/matt/Projects/family-task/models/task.rb"] 
+2.5.1 :013 > 
+2.5.1 :014 > get "/" do
+2.5.1 :015 >       erb :home
+2.5.1 :016?>   end
+ => [#<Mustermann::Sinatra:"/">, [], #<Proc:0x00007fa45a15a328@/Users/matt/.rvm/gems/ruby-2.5.1/gems/sinatra-2.0.3/lib/sinatra/base.rb:1635>] 
+2.5.1 :017 > 
+2.5.1 :018 > #######################
+ => nil 
+2.5.1 :019 > ####### USERS #########
+ => nil 
+2.5.1 :020 > #######################
+ => nil 
+2.5.1 :021 > 
+2.5.1 :022 > get "/users" do
+2.5.1 :023 >       @users = User.all
+2.5.1 :024?>     erb :'users/index'
+2.5.1 :025?>   end
+ => [#<Mustermann::Sinatra:"/users">, [], #<Proc:0x00007fa459c26000@/Users/matt/.rvm/gems/ruby-2.5.1/gems/sinatra-2.0.3/lib/sinatra/base.rb:1635>] 
+2.5.1 :026 > 
+2.5.1 :027 > get "/users/new" do
+2.5.1 :028 >       @user = User.new
+2.5.1 :029?>     erb :'users/new'
+2.5.1 :030?>   end
+ => [#<Mustermann::Sinatra:"/users/new">, [], #<Proc:0x00007fa45a2556d8@/Users/matt/.rvm/gems/ruby-2.5.1/gems/sinatra-2.0.3/lib/sinatra/base.rb:1635>] 
+2.5.1 :031 > 
+2.5.1 :032 > post "/users" do
+2.5.1 :033 >       params.merge!({ id: User.maximum(:id).next })
+2.5.1 :034?>     @user = User.new(params)
+2.5.1 :035?>   
+2.5.1 :036?>     if @user.save
+2.5.1 :037?>         redirect '/users'
+2.5.1 :038?>       else
+2.5.1 :039?>         erb :'users/new'
+2.5.1 :040?>       end
+2.5.1 :041?>   end
+ => [#<Mustermann::Sinatra:"/users">, [], #<Proc:0x00007fa459bc50c0@/Users/matt/.rvm/gems/ruby-2.5.1/gems/sinatra-2.0.3/lib/sinatra/base.rb:1635>] 
+2.5.1 :042 > 
+2.5.1 :043 > get "/users/:id/edit" do
+2.5.1 :044 >       @user = User.find(params[:id])
+2.5.1 :045?>     erb :'users/edit'
+2.5.1 :046?>   end
+ => [#<Mustermann::Sinatra:"/users/:id/edit">, [], #<Proc:0x00007fa45907dd20@/Users/matt/.rvm/gems/ruby-2.5.1/gems/sinatra-2.0.3/lib/sinatra/base.rb:1635>] 
+2.5.1 :047 > 
+2.5.1 :048 > put "/users/:id" do
+2.5.1 :049 >       @user = User.find(params[:id])
+2.5.1 :050?>     params.delete(:_method)
+2.5.1 :051?>     if @user.update(params)
+2.5.1 :052?>         redirect '/users'
+2.5.1 :053?>       else
+2.5.1 :054?>         erb :'users/edit'
+2.5.1 :055?>       end
+2.5.1 :056?>   end
+ => [#<Mustermann::Sinatra:"/users/:id">, [], #<Proc:0x00007fa45a220578@/Users/matt/.rvm/gems/ruby-2.5.1/gems/sinatra-2.0.3/lib/sinatra/base.rb:1635>] 
+2.5.1 :057 > 
+2.5.1 :058 > delete "/users/:id" do
+2.5.1 :059 >       @user = User.find(params[:id])
+2.5.1 :060?>     @user.destroy
+2.5.1 :061?>     redirect '/users'
+2.5.1 :062?>   end
+ => [#<Mustermann::Sinatra:"/users/:id">, [], #<Proc:0x00007fa45a25c5c8@/Users/matt/.rvm/gems/ruby-2.5.1/gems/sinatra-2.0.3/lib/sinatra/base.rb:1635>] 
+2.5.1 :063 > 
+2.5.1 :064 > 
+2.5.1 :065 > #######################
+ => nil 
+2.5.1 :066 > ####### TASKS #########
+ => nil 
+2.5.1 :067 > #######################
+ => nil 
+2.5.1 :068 > 
+2.5.1 :069 > get "/tasks" do
+2.5.1 :070 >       @tasks = Task.all
+2.5.1 :071?>     erb :'tasks/index'
+2.5.1 :072?>   end
+ => [#<Mustermann::Sinatra:"/tasks">, [], #<Proc:0x00007fa459c8aac8@/Users/matt/.rvm/gems/ruby-2.5.1/gems/sinatra-2.0.3/lib/sinatra/base.rb:1635>] 
+2.5.1 :073 > 
+2.5.1 :074 > get "/tasks/new" do
+2.5.1 :075 >       @task = Task.new
+2.5.1 :076?>     erb :'tasks/new'
+2.5.1 :077?>   end
+ => [#<Mustermann::Sinatra:"/tasks/new">, [], #<Proc:0x00007fa45a2eb6b0@/Users/matt/.rvm/gems/ruby-2.5.1/gems/sinatra-2.0.3/lib/sinatra/base.rb:1635>] 
+2.5.1 :078 > 
+2.5.1 :079 > post "/tasks" do
+2.5.1 :080 >       id = Task.maximum(:id)&.next || 1
+2.5.1 :081?>     params.merge!({ id: id, status: false })
+2.5.1 :082?>     @task = Task.new(params)
+2.5.1 :083?>   
+2.5.1 :084?>     if @task.save
+2.5.1 :085?>         redirect '/tasks'
+2.5.1 :086?>       else
+2.5.1 :087?>         erb :'tasks/new'
+2.5.1 :088?>       end
+2.5.1 :089?>   end
+ => [#<Mustermann::Sinatra:"/tasks">, [], #<Proc:0x00007fa45a911418@/Users/matt/.rvm/gems/ruby-2.5.1/gems/sinatra-2.0.3/lib/sinatra/base.rb:1635>] 
+2.5.1 :090 > 
+2.5.1 :091 > get "/tasks/:id/edit" do
+2.5.1 :092 >       @task = Task.find(params[:id])
+2.5.1 :093?>     erb :'tasks/edit'
+2.5.1 :094?>   end
+ => [#<Mustermann::Sinatra:"/tasks/:id/edit">, [], #<Proc:0x00007fa459c88d40@/Users/matt/.rvm/gems/ruby-2.5.1/gems/sinatra-2.0.3/lib/sinatra/base.rb:1635>] 
+2.5.1 :095 > 
+2.5.1 :096 > put "/tasks/:id" do
+2.5.1 :097 >       @task = Task.find(params[:id])
+2.5.1 :098?>     params.delete(:_method)
+2.5.1 :099?>     if @task.update(params)
+2.5.1 :100?>         redirect '/tasks'
+2.5.1 :101?>       else
+2.5.1 :102?>         erb :'tasks/edit'
+2.5.1 :103?>       end
+2.5.1 :104?>   end
+ => [#<Mustermann::Sinatra:"/tasks/:id">, [], #<Proc:0x00007fa459af0dc0@/Users/matt/.rvm/gems/ruby-2.5.1/gems/sinatra-2.0.3/lib/sinatra/base.rb:1635>] 
+2.5.1 :105 > 
+2.5.1 :106 > delete "/tasks/:id" do
+2.5.1 :107 >       @task = Task.find(params[:id])
+2.5.1 :108?>     @task.destroy
+2.5.1 :109?>     redirect '/tasks'
+2.5.1 :110?>   end
+ => [#<Mustermann::Sinatra:"/tasks/:id">, [], #<Proc:0x00007fa459afa730@/Users/matt/.rvm/gems/ruby-2.5.1/gems/sinatra-2.0.3/lib/sinatra/base.rb:1635>] 
+2.5.1 :111 > 
+2.5.1 :112 > #######################
+ => nil 
+2.5.1 :113 > ##### LOCATIONS #######
+ => nil 
+2.5.1 :114 > #######################
+ => nil 
+2.5.1 :115 > 
+2.5.1 :116 > get "/locations" do
+2.5.1 :117 >       @locations = Location.all
+2.5.1 :118?>     erb :'locations/index'
+2.5.1 :119?>   end
+ => [#<Mustermann::Sinatra:"/locations">, [], #<Proc:0x00007fa45a349b48@/Users/matt/.rvm/gems/ruby-2.5.1/gems/sinatra-2.0.3/lib/sinatra/base.rb:1635>] 
+2.5.1 :120 > 
+2.5.1 :121 > get "/locations/new" do
+2.5.1 :122 >       @location = Location.new
+2.5.1 :123?>     erb :'locations/new'
+2.5.1 :124?>   end
+ => [#<Mustermann::Sinatra:"/locations/new">, [], #<Proc:0x00007fa45a95fc58@/Users/matt/.rvm/gems/ruby-2.5.1/gems/sinatra-2.0.3/lib/sinatra/base.rb:1635>] 
+2.5.1 :125 > 
+2.5.1 :126 > post "/locations" do
+2.5.1 :127 >       params.merge!({ id: Location.maximum(:id).next })
+2.5.1 :128?>     @location = Location.new(params)
+2.5.1 :129?>   
+2.5.1 :130?>     if @location.save
+2.5.1 :131?>         redirect '/locations'
+2.5.1 :132?>       else
+2.5.1 :133?>         erb :'locations/new'
+2.5.1 :134?>       end
+2.5.1 :135?>   end
+ => [#<Mustermann::Sinatra:"/locations">, [], #<Proc:0x00007fa45a9860b0@/Users/matt/.rvm/gems/ruby-2.5.1/gems/sinatra-2.0.3/lib/sinatra/base.rb:1635>] 
+2.5.1 :136 > 
+2.5.1 :137 > get "/locations/:id/edit" do
+2.5.1 :138 >       @location = Location.find(params[:id])
+2.5.1 :139?>     erb :'locations/edit'
+2.5.1 :140?>   end
+ => [#<Mustermann::Sinatra:"/locations/:id/edit">, [], #<Proc:0x00007fa45a8cc700@/Users/matt/.rvm/gems/ruby-2.5.1/gems/sinatra-2.0.3/lib/sinatra/base.rb:1635>] 
+2.5.1 :141 > 
+2.5.1 :142 > put "/locations/:id" do
+2.5.1 :143 >       @location = Location.find(params[:id])
+2.5.1 :144?>     params.delete(:_method)
+2.5.1 :145?>     if @location.update(params)
+2.5.1 :146?>         redirect '/users'
+2.5.1 :147?>       else
+2.5.1 :148?>         erb :'locations/edit'
+2.5.1 :149?>       end
+2.5.1 :150?>   end
+ => [#<Mustermann::Sinatra:"/locations/:id">, [], #<Proc:0x00007fa459d45260@/Users/matt/.rvm/gems/ruby-2.5.1/gems/sinatra-2.0.3/lib/sinatra/base.rb:1635>] 
+2.5.1 :151 > 
+2.5.1 :152 > delete "/locations/:id" do
+2.5.1 :153 >       @location = Location.find(params[:id])
+2.5.1 :154?>     @location.destroy
+2.5.1 :155?>     redirect '/locations'
+2.5.1 :156?>   end
+ => [#<Mustermann::Sinatra:"/locations/:id">, [], #<Proc:0x00007fa45a9ad318@/Users/matt/.rvm/gems/ruby-2.5.1/gems/sinatra-2.0.3/lib/sinatra/base.rb:1635>] 
+2.5.1 :157 > 
+2.5.1 :158 > 
+2.5.1 :159 > #######################
+ => nil 
+2.5.1 :160 > ####### EVENTS ########
+ => nil 
+2.5.1 :161 > #######################
+ => nil 
+2.5.1 :162 > 
+2.5.1 :163 > get "/events" do
+2.5.1 :164 >       @events = Event.all
+2.5.1 :165?>     erb :'events/index'
+2.5.1 :166?>   end
+ => [#<Mustermann::Sinatra:"/events">, [], #<Proc:0x00007fa45a3736f0@/Users/matt/.rvm/gems/ruby-2.5.1/gems/sinatra-2.0.3/lib/sinatra/base.rb:1635>] 
+2.5.1 :167 > 
+2.5.1 :168 > get "/events/new" do
+2.5.1 :169 >       @event = Event.new
+2.5.1 :170?>     erb :'events/new'
+2.5.1 :171?>   end
+ => [#<Mustermann::Sinatra:"/events/new">, [], #<Proc:0x00007fa45a398478@/Users/matt/.rvm/gems/ruby-2.5.1/gems/sinatra-2.0.3/lib/sinatra/base.rb:1635>] 
+2.5.1 :172 > 
+2.5.1 :173 > post "/events" do
+2.5.1 :174 >       id = Event.maximum(:id)&.next || 1
+2.5.1 :175?>     params.merge!({ id: id })
+2.5.1 :176?>     host_ids        = params[:host_ids]
+2.5.1 :177?>     attendee_ids    = params[:attendee_ids]
+2.5.1 :178?>     event_params    = params.slice(:id, :date, :location_id, :description, :title)
+2.5.1 :179?>     @event          = Event.new(event_params)
+2.5.1 :180?>   
+2.5.1 :181?>     binding.pry
+2.5.1 :182?>     if @event.save && EventUserManager.create(host_ids, attendee_ids, @event)
+2.5.1 :183?>         redirect '/events'
+2.5.1 :184?>       else
+2.5.1 :185?>         erb :'events/new'
+2.5.1 :186?>       end
+2.5.1 :187?>   end
+ => [#<Mustermann::Sinatra:"/events">, [], #<Proc:0x00007fa45a3e1b28@/Users/matt/.rvm/gems/ruby-2.5.1/gems/sinatra-2.0.3/lib/sinatra/base.rb:1635>] 
+2.5.1 :188 > 
+2.5.1 :189 > get "/events/:id/edit" do
+2.5.1 :190 >       @event = Event.find(params[:id])
+2.5.1 :191?>     erb :'events/edit'
+2.5.1 :192?>   end
+ => [#<Mustermann::Sinatra:"/events/:id/edit">, [], #<Proc:0x00007fa45a419c30@/Users/matt/.rvm/gems/ruby-2.5.1/gems/sinatra-2.0.3/lib/sinatra/base.rb:1635>] 
+2.5.1 :193 > 
+2.5.1 :194 > put "/events/:id" do
+2.5.1 :195 >       @event = Event.find(params[:id])
+2.5.1 :196?>     params.delete(:_method)
+2.5.1 :197?>     if @event.update(params)
+2.5.1 :198?>         redirect '/events'
+2.5.1 :199?>       else
+2.5.1 :200?>         erb :'events/edit'
+2.5.1 :201?>       end
+2.5.1 :202?>   end
+ => [#<Mustermann::Sinatra:"/events/:id">, [], #<Proc:0x00007fa45a449638@/Users/matt/.rvm/gems/ruby-2.5.1/gems/sinatra-2.0.3/lib/sinatra/base.rb:1635>] 
+2.5.1 :203 > 
+2.5.1 :204 > delete "/events/:id" do
+2.5.1 :205 >       @event = Event.find(params[:id])
+2.5.1 :206?>     @event.destroy
+2.5.1 :207?>     redirect '/events'
+2.5.1 :208?>   end
+ => [#<Mustermann::Sinatra:"/events/:id">, [], #<Proc:0x00007fa45a462610@/Users/matt/.rvm/gems/ruby-2.5.1/gems/sinatra-2.0.3/lib/sinatra/base.rb:1635>] 
+2.5.1 :209 > 

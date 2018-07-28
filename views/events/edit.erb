@@ -1,37 +1,32 @@
 <div class="grid-container">
   <div class="medium-6 cell">
-    <% if @task.errors.any? %>
+    <% if @event.errors.any? %>
       <br>
       <div class="callout alert">
-        <h5>Edit Task Errors</h5>
+        <h5>Edit Event Errors</h5>
         <ul>
-          <%@task.errors.full_messages.each do |error|%>
+          <%@event.errors.full_messages.each do |error|%>
             <li><%=error.upcase%></li>
           <%end%>
         </ul>
       </div>
     <% end %>
     <fieldset class="fieldset">
-      <legend>Edit Task</legend>
-      <form action="/tasks/<%=@task.id%>" method="post">
+      <legend>Edit Event</legend>
+      <form action="/events/<%=@event.id%>" method="post">
         <input type="hidden" name="_method" value="PUT">
-        <label>User:</label>
-        <select name="user_id">
-          <% User.all.each do |user| %>
-            <option selected="<%= user.id == @task.user_id ? 'selected' : 'false'%>" value="<%=user.id%>"><%= user.first_name %></option>
+        <label>Title:</label>
+        <input type="text" required="true" name="title" value="<%=@event.title%>">
+        <label>Location:</label>
+        <select name="location_id">
+          <% Location.all.each do |location| %>
+            <option <%= 'selected' if location.id == @event.location_id %> value="<%=location.id%>"><%= location.address_1 %></option>
           <% end %>
         </select>
+        <label>Date:</label>
+        <input type="date" name="date" value="<%=@event.date&.strftime('%Y-%m-%d')%>">
         <label>Description: </label>
-        <textarea required="true" name="description" value="<%=@task.description%>"><%= @task.description %> </textarea>
-        <label>Event:</label>
-        <select name="event_id">
-          <%# <% Event.all.each do |event| %1> %>
-          <%# <% end %1> %>
-        </select>
-        <input type="hidden" name="status" value="false">
-        <input type="checkbox" id="status" name="status" <%= @task.status ? 'checked' : '' %>>
-        <label for="status">Completed?</label>
-        <br>
+        <textarea required="true" name="description" value="<%=@event.description%>">Enter description here...</textarea>
         <input type="submit" value="submit">
       </form>
     </fieldset>

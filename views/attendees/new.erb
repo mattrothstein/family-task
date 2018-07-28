@@ -1,0 +1,29 @@
+<div class="grid-container">
+  <div class="medium-6 cell">
+    <h3>Invite People</h3>
+    <% if @attendee.errors.any? %>
+      <br>
+      <div class="callout alert">
+        <h5>Invitation Errors</h5>
+        <ul>
+          <%@attendee.errors.full_messages.each do |error|%>
+            <li><%=error.upcase%></li>
+          <%end%>
+        </ul>
+      </div>
+    <% end %>
+    <fieldset class="fieldset">
+      <legend><%= @event.title%></legend>
+      <form action="/event/<%=@event.id%>/attendees" method="post">
+        <label>Attendees:</label>
+        <select name="user_id">
+          <% User.all.each do |user| %>
+            <option value="<%=user.id%>"><%= user.first_name %></option>
+          <% end %>
+        </select>
+        <input type="submit" value="Add">
+      </form>
+    </fieldset>
+    <a href='/event/<%=@event.id%>/attendees'>See Attendees</a>
+  </div>
+</div>

@@ -1,0 +1,29 @@
+<div class="grid-container">
+  <div class="medium-6 cell">
+    <% if @user.errors.any? %>
+      <br>
+      <div class="callout alert">
+        <h5>New User Errors</h5>
+        <ul>
+          <%@user.errors.full_messages.each do |error|%>
+            <li><%=error.upcase%></li>
+          <%end%>
+        </ul>
+      </div>
+    <% end %>
+    <fieldset class="fieldset">
+      <legend>New User</legend>
+      <form action="/users" method="post">
+        <label>First Name: </label>
+        <input type="text" required="true" name="first_name" value="<%=@user.first_name%>">
+        <label>Last Name: </label>
+        <input type="text" required="true" name="last_name" value="<%=@user.last_name%>">
+        <label>Email:</label>
+        <input type="email" required="true" name="email" value="<%=@user.email%>">
+        <label>Password:</label>
+        <input type="password" name="password" value="">
+        <input type="submit" value="submit">
+      </form>
+    </fieldset>
+  </div>
+</div>

@@ -300,5 +300,31 @@ end
 # 7. Users who have hosted the most events
 
 get "/stats" do
+  @completed_tasks_by_user = User.select("users.id, users.first_name, COUNT(tasks.id) completed_task_count").
+                                  joins(:tasks).
+                                  where("tasks.status = ?", true).
+                                  group("users.id").
+                                  order("completed_task_count DESC")
+
+  @completed_tasks_by_event = Event.select("events.id, events.title, COUNT(tasks.id) completed_task_count").
+                                  joins(:tasks).
+                                  where("tasks.status = ?", true).
+                                  group("events.id").
+                                  order("completed_task_count DESC")
+
+  @events_count_by_location = Location.select("locations.id, locations.address_1, COUNT(events.id) events_hosted_count").
+                                  joins(:events).
+                                  group("locations.id").
+                                  order("events_hosted_count DESC")
+
+  @host_by_user             = User.select("users.id, users.first_name, COUNT(hosts.event_id) events_hosted_count").
+                                  joins(:hosts).
+                                  group("users.id").
+                                  order("events_hosted_count DESC")
+
+  @attended_by_user         = User.select("users.id, users.first_name, COUNT(attendees.event_id) events_attended_count").
+                                  joins(:attendees).
+                                  group("users.id").
+                                  order("events_attended_count DESC")
   erb :stats
 end

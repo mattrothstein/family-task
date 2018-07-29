@@ -1,1 +1,168 @@
-This is where all the stats go!
+<div class="grid-container">
+  <h2>Reports</h2>
+  <div class="medium-6 cell">
+    <h4>Completed Task by User</h4>
+    <div class="callout">
+      <h5>SQL Statement</h5>
+      <pre>
+        SELECT users.id, users.first_name, COUNT(tasks.id) completed_task_count
+        FROM "users"
+        INNER JOIN "tasks"
+          ON "tasks"."user_id" = "users"."id"
+          WHERE (tasks.status = TRUE)
+        GROUP BY users.id
+        ORDER BY completed_task_count DESC;
+      </pre>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>First Name</th>
+          <th>Completed Task Count</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @completed_tasks_by_user.each do |completed_task| %>
+          <tr>
+            <td><%= completed_task.first_name %></td>
+            <td><%= completed_task.completed_task_count %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <hr>
+
+  <div class="medium-6 cell">
+    <h4>Completed Task by Event</h4>
+    <div class="callout">
+      <h5>SQL Statement</h5>
+      <pre>
+        SELECT events.id, events.title, COUNT(tasks.id) completed_task_count
+        FROM "events"
+        INNER JOIN "tasks"
+          ON "tasks"."event_id" = "events"."id"
+          WHERE (tasks.status = TRUE)
+        GROUP BY events.id
+        ORDER BY completed_task_count DESC;
+      </pre>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>First Name</th>
+          <th>Completed Task Count</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @completed_tasks_by_event.each do |completed_task| %>
+          <tr>
+            <td><%= completed_task.title %></td>
+            <td><%= completed_task.completed_task_count %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <hr>
+
+  <div class="medium-6 cell">
+    <h4>Location by Event Hosting</h4>
+    <div class="callout">
+      <h5>SQL Statement</h5>
+      <pre>
+        SELECT locations.id, locations.address_1, COUNT(events.id) events_hosted_count
+        FROM "locations"
+        INNER JOIN "events"
+          ON "events"."location_id" = "locations"."id"
+        GROUP BY locations.id
+        ORDER BY events_hosted_count DESC;
+      </pre>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Location Address</th>
+          <th>Events Hosted</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @events_count_by_location.each do |location| %>
+          <tr>
+            <td><%= location.address_1 %></td>
+            <td><%= location.events_hosted_count %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <hr>
+
+  <div class="medium-6 cell">
+    <h4>Event Hosting by User</h4>
+    <div class="callout">
+      <h5>SQL Statement</h5>
+      <pre>
+        SELECT users.id, users.first_name, COUNT(hosts.event_id) events_hosted_count
+        FROM "users"
+        INNER JOIN "hosts"
+          ON "hosts"."user_id" = "users"."id"
+        GROUP BY users.id
+        ORDER BY events_hosted_count DESC;
+      </pre>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>First Name</th>
+          <th>Events Hosted</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @host_by_user.each do |host| %>
+          <tr>
+            <td><%= host.first_name %></td>
+            <td><%= host.events_hosted_count %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <hr>
+
+  <div class="medium-6 cell">
+    <h4>Events Attended by User</h4>
+    <div class="callout">
+      <h5>SQL Statement</h5>
+      <pre>
+        SELECT users.id, users.first_name, COUNT(attendees.event_id) events_attended_count
+        FROM "users"
+        INNER JOIN "attendees"
+          ON "attendees"."user_id" = "users"."id"
+        GROUP BY users.id
+        ORDER BY events_attended_count DESC;
+      </pre>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>First Name</th>
+          <th>Events Attended</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @attended_by_user.each do |host| %>
+          <tr>
+            <td><%= host.first_name %></td>
+            <td><%= host.events_attended_count %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+<br>

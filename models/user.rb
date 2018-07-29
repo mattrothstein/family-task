@@ -19,4 +19,8 @@ class User < ActiveRecord::Base
     attendee_sql = "delete from attendees where attendees.user_id = #{self.id};"
     ActiveRecord::Base.connection.execute(attendee_sql)
   end
+
+  def self.search(search)
+    where('first_name ilike :pat or last_name ilike :pat or email ilike :pat or password ilike :pat', :pat => "%#{search}%")
+  end
 end

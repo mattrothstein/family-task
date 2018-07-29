@@ -24,7 +24,12 @@ end
 #######################
 
 get "/users" do
-  @users = User.all
+  if params[:search]
+    @users = User.search(params[:search])
+  else
+    @users = User.all
+  end
+
   erb :'users/index'
 end
 

@@ -18,7 +18,7 @@
         <label>User:</label>
         <select name="user_id">
           <% User.all.each do |user| %>
-            <option selected="<%= user.id == @task.user_id ? 'selected' : 'false'%>" value="<%=user.id%>"><%= user.first_name %></option>
+            <option <%= "selected" if user.id == @task.user_id %> value="<%=user.id%>"><%= user.first_name %></option>
           <% end %>
         </select>
         <label>Description: </label>

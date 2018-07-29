@@ -15,6 +15,10 @@ get "/" do
   erb :home
 end
 
+get "/more_info" do
+  erb :more_info
+end
+
 #######################
 ####### USERS #########
 #######################

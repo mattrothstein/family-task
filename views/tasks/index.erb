@@ -1,5 +1,39 @@
 <div class="grid-container">
   <div class="medium-6 cell">
+    <h4>Search</h4>
+    <form action="/tasks" method="get">
+      <div style="width:200px;display: inline-block;">
+        <label>Event:</label>
+        <select name="[search]event_id">
+          <% unless params.dig(:search, :event_id).present? %>
+            <option> </option>
+          <% end %>
+          <% Event.all.each do |event| %>
+            <option <%= 'selected' if event.id.to_s == params.dig(:search, :event_id) %> value="<%=event.id%>"><%= event.title %></option>
+          <% end %>
+        </select>
+      </div>
+      <div style="width:200px;display: inline-block;">
+        <label>User:</label>
+        <select name="[search]user_id">
+          <% unless params.dig(:search, :user_id).present? %>
+            <option> </option>
+          <% end %>
+          <% User.all.each do |user| %>
+            <option <%= 'selected' if user.id.to_s == params.dig(:search, :user_id) %> value="<%=user.id%>"><%= user.first_name %></option>
+          <% end %>
+        </select>
+      </div>
+      <div style="width:200px;display: inline-block;">
+        <label>
+          <input <%= 'checked' if params.dig(:search, :status) == "on" %> type="checkbox" name="[search]status"> Completed?
+        </label>
+      </div>
+      <br>
+      <input type="submit" value="Search">
+    </form>
+  </div>
+  <div class="medium-6 cell">
     <h2><%= @tasks.count %> Tasks</h2>
     <table>
       <thead>

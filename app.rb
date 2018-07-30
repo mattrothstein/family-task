@@ -76,7 +76,12 @@ end
 #######################
 
 get "/tasks" do
-  @tasks = Task.all
+  if params[:search]
+    @tasks = Task.search(params[:search])
+  else
+    @tasks = Task.all
+  end
+
   erb :'tasks/index'
 end
 
@@ -123,7 +128,12 @@ end
 #######################
 
 get "/locations" do
-  @locations = Location.all
+  if params[:search]
+    @locations = Location.search(params[:search])
+  else
+    @locations = Location.all
+  end
+
   erb :'locations/index'
 end
 
@@ -170,7 +180,12 @@ end
 #######################
 
 get "/events" do
-  @events = Event.all
+  if params[:search]
+    @events = Event.search(params[:search])
+  else
+    @events = Event.all
+  end
+
   erb :'events/index'
 end
 

@@ -1,5 +1,32 @@
 <div class="grid-container">
   <div class="medium-6 cell">
+    <h4>Search</h4>
+    <form action="/locations" method="get">
+      <div style="width:200px;display: inline-block;">
+        <label>Address 1:</label>
+        <input type="text" name="[search]address_1" value="<%=params.dig(:search, :address_1)%>">
+      </div>
+      <div style="width:200px;display: inline-block;">
+        <label>Address 2:</label>
+        <input type="text" name="[search]address_2" value="<%=params.dig(:search, :address_2)%>">
+      </div>
+      <div style="width:200px;display: inline-block;">
+        <label>City:</label>
+        <input type="text" name="[search]city" value="<%=params.dig(:search, :city)%>">
+      </div>
+      <div style="width:200px;display: inline-block;">
+        <label>State:</label>
+        <input type="text" name="[search]state" value="<%=params.dig(:search, :state)%>">
+      </div>
+      <div style="width:200px;display: inline-block;">
+        <label>Postal Code:</label>
+        <input type="text" name="[search]postal_code" value="<%=params.dig(:search, :postal_code)%>">
+      </div>
+      <br>
+      <input type="submit" value="Search">
+    </form>
+  </div>
+  <div class="medium-6 cell">
     <h2><%= @locations.count %> Locations</h2>
     <table>
       <thead>

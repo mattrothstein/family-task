@@ -1,5 +1,25 @@
 <div class="grid-container">
   <div class="medium-6 cell">
+    <h4>Search</h4>
+    <form action="/events" method="get">
+      <div style="width:200px;display: inline-block;">
+        <label>Title:</label>
+        <input type="text" name="[search]title" value="<%=params.dig(:search, :title)%>">
+      </div>
+      <div style="width:200px;display: inline-block;">
+        <label>Location:</label>
+        <select name="[search]location_id">
+          <option> </option>
+          <% Location.all.each do |location| %>
+            <option <%= 'selected' if location.id.to_s == params.dig(:search, :location_id) %> value="<%=location.id%>"><%= location.address_1 %></option>
+          <% end %>
+        </select>
+      </div>
+      <br>
+      <input type="submit" value="Search">
+    </form>
+  </div>
+  <div class="medium-6 cell">
     <h2><%= @events.count %> Events</h2>
     <table>
       <thead>
